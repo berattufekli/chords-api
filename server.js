@@ -42,3 +42,9 @@ app.get("/", (req,res)=> {
   res.send("Hello there! Api is working")
 })
 
+
+app.listen(PORT, async () => {
+  console.log("Çalışıyor", process.env.PORT)
+  // db.sequelize.sync({ force: true })
+  // db.sequelize.sync() 
+});
