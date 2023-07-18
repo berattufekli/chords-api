@@ -1,50 +1,24 @@
-const express = require("express");
-var cors = require("cors");
-const app = express();
-app.use(cors());
+const express = require('express');
+const mongoose = require('mongoose');
 
-const db = require("./models");
+const app = express();
 
 const route = require("./routers");
-const { createProxyMiddleware } = require("http-proxy-middleware");
-const customErrorHandler = require("./middlewares/errors/customErrorHandler");
 
-const dotenv = require("dotenv");
-const PORT = process.env.PORT || 8080;
-const multer = require("multer");
-const path = require("path");
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-dotenv.config({
-  path: "./config/config.env",
+
+// MongoDB bağlantısı
+mongoose.connect('mongodb+srv://berattufekli:SampiyonBesiktas1903@chords.jz3fkpd.mongodb.net/chords_test', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => {
+  console.log('MongoDB bağlantısı başarılı!');
+}).catch((error) => {
+  console.error('MongoDB bağlantısı başarısız: ', error);
 });
 
 app.use("/api", route);
 
-app.use(customErrorHandler);
-
-app.use(
-  "/*",
-  createProxyMiddleware({
-    target: "http://localhost:3000/", //original url
-    // target: "http://68.183.110.77/", //original url
-    changeOrigin: true,
-    //secure: false,
-    onProxyRes: function (proxyRes, req, res) {
-      proxyRes.headers["Access-Control-Allow-Origin"] = "*";
-    },
-  })
-);
-
-app.get("/", (req,res)=> {
-  res.send("Hello there! Api is working")
-})
-
-
-app.listen(PORT, async () => {
-  console.log("Çalışıyor", process.env.PORT)
-  // db.sequelize.sync({ force: true })
-  // db.sequelize.sync() 
+// API sunucusunu dinle
+app.listen(3000, () => {
+  console.log('API sunucusu çalışıyor, http://localhost:3000 adresine gidin.');
 });
