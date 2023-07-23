@@ -1,5 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
+const { createProxyMiddleware } = require("http-proxy-middleware");
+const path = require("path");
 
 const app = express();
 
@@ -16,9 +19,14 @@ mongoose.connect('mongodb+srv://berattufekli:SampiyonBesiktas1903@chords.jz3fkpd
   console.error('MongoDB bağlantısı başarısız: ', error);
 });
 
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(cors());
+
+
 app.use("/api", route);
 
 // API sunucusunu dinle
-app.listen(3000, () => {
-  console.log('API sunucusu çalışıyor, http://localhost:3000 adresine gidin.');
+app.listen(8080, () => {
+  console.log('API sunucusu çalışıyor, http://localhost:8080 adresine gidin.');
 });
