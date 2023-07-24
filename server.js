@@ -27,6 +27,6 @@ app.use(cors());
 app.use("/api", route);
 
 // API sunucusunu dinle
-app.listen(8080, () => {
+app.listen(8080, "0.0.0.0" , () => {
   console.log('API sunucusu çalışıyor, http://localhost:8080 adresine gidin.');
 });
