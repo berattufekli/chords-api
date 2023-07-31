@@ -1,34 +1,34 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const songSchema = new Schema(
+const songChordSchema = new Schema(
   {
-    artistId: {
+    songId: {
       type: Schema.Types.ObjectId,
-      ref: 'artists',
+      ref: 'songs',
       required: true,
     },
-    songName: {
+    chordId: {
+      type: Schema.Types.ObjectId,
+      ref: "chords",
+      required: true,
+    },
+    chordName: {
       type: String,
       required: true,
     },
-    songAlbum: {
-      type: String,
+    line: {
+      type: Number,
       required: true,
     },
-    originalTone: {
-      type: String,
-    },
-    easyTone: {
-      type: String,
-    },
+    position: {
+      type: Number,
+      required: true,
+    },  
     status: {
       type: String,
       enum: ['active', 'passive'],
       default: "active",
-    },
-    lyrics: {
-      type: [String],
     },
     createdDate: {
       type: Date,
@@ -36,9 +36,9 @@ const songSchema = new Schema(
     }
     // Diğer alanları buraya ekleyebilirsiniz
   },
-  { collection: 'songs' }
+  { collection: 'songchords' }
 );
 
-const songs = mongoose.model('songs', songSchema);
+const songchords = mongoose.model('songchords', songChordSchema);
 
-module.exports = songs;
+module.exports = songchords;
