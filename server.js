@@ -27,8 +27,8 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors());
 
 app.use("/api", route);
-
+const PORT = process.env.PORT || 8080;
 // API sunucusunu dinle
-app.listen(8080 , () => {
+app.listen(PORT , () => {
   console.log('API sunucusu çalışıyor, http://localhost:8080 adresine gidin.');
 });
