@@ -29,7 +29,9 @@ exports.register = asyncErrorWrapper(async (req, res, next) => {
 exports.login = asyncErrorWrapper(async (req, res, next) => {
   const { user, token } = req;
 
-  console.log(req.body);
+  console.log("bunlar varmış", user, token);
+
+  console.log("LOGİN SON", req.body);
   return res
     .status(200)
     .cookie("access_token", token, {
@@ -52,6 +54,42 @@ exports.login = asyncErrorWrapper(async (req, res, next) => {
       userId: user._id,
     });
 });
+
+exports.updateUserInformation = asyncErrorWrapper(async (req, res, next) => {
+  const userId = req.params.id;
+
+  console.log(req.body);
+
+  try {
+    const Users = mongoose.model("users");
+    const updatedUser = await Users.findByIdAndUpdate(userId, req.body, { new: true });
+
+    if (!updatedUser) {
+      return res.status(404).json({
+        model: "users",
+        success: false,
+        message: "Güncellenecek kayıt bulunamadı",
+      });
+    }
+
+    res.status(200).json({
+      model: "users",
+      success: true,
+      message: "Kayıt güncellendi",
+      data: updatedUser,
+    });
+  } catch (err) {
+    console.log("HATA", err);
+    res.status(500).json({
+      model: "users",
+      success: false,
+      message: 'Sunucu hatası',
+      error: err,
+    });
+  }
+});
+
+
 
 
 

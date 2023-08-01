@@ -23,4 +23,11 @@ route.post(
   authController.login,
 );
 
+route.put(
+  "/update-user-information/:id",
+  authMiddleware.updateUserInformation,
+  authMiddleware.generateJwt,
+  authController.login,
+)
+
 module.exports = route;

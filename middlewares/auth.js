@@ -35,7 +35,7 @@ exports.generateJwt = expressAsyncHandler(async (req, res, next) => {
   const user = req.user;
   const { JWT_SECRET, JWT_EXPIRE } = process.env;
 
-  
+
   let payload = {
     email: user.email,
     password: user.password,
@@ -54,12 +54,28 @@ exports.generateJwt = expressAsyncHandler(async (req, res, next) => {
   return next();
 });
 
+exports.updateUserInformation = expressAsyncHandler(async (req, res, next) => {
+  const userId = req.params.id;
+
+  const Users = mongoose.model("users");
+  const updatedUser = await Users.findByIdAndUpdate(userId, req.body, { new: true });
+
+  if (!updatedUser) {
+    return next("Please check your password!");
+  }
+
+  req.user = updatedUser;
+  return next();
+});
+
+
+
 
 exports.getAccessToRoute = expressAsyncHandler(async (req, res, next) => {
   try {
     console.log("ksjdkjsksjd");
     if (!(await authHelpers.isAccessTokenIncluded(req))) {
-      return res.json({userAuth: "student"})
+      return res.json({ userAuth: "student" })
     }
 
     const accessToken = await authHelpers.getAccessTokenFromHeader(req);

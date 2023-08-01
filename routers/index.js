@@ -15,6 +15,7 @@ const songsRoute = require("./songs");
 const usersRoute = require("./users");
 const authRoute = require("./auth");
 const songNotesRoute = require("./songNotes");
+const listsRoute = require("./lists");
 
 route.use("/auth", authRoute);
 route.use("/users", usersRoute);
@@ -23,5 +24,6 @@ route.use("/chords", chordsRoute);
 route.use("/song-chords", songChordsRoute);
 route.use("/songs", songsRoute);
 route.use("/song-notes", songNotesRoute);
+route.use("/lists", listsRoute);
 
 module.exports = route;
